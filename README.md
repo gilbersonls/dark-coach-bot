@@ -1,6 +1,6 @@
 # DarkCoachBot
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Telegram bot for anyone who wants to receive thoughts from the true Dark Coach.
 
 ## Installation
 
