@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule, OnEvent } from '@nestjs/event-emitter';
 
+import { DARKCOACH_BIO, DARKCOACH_BOT } from './app.constants';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TelegramModule } from './telegram/telegram.module';
@@ -27,14 +28,15 @@ export class AppModule {
 
     switch (message.text) {
       case '/pensamento':
-        return bot.sendMessage(message.chat.id, await this.service.getDarkCoachThought());
+        return bot.sendMessage(
+          message.chat.id,
+          `"${await this.service.getDarkCoachThought()}" - ${DARKCOACH_BOT}`,
+        );
 
       case '/start':
         return bot.sendMessage(
           message.chat.id,
-          `Olá, ${
-            message.from.username
-          }, se quiser um pensamento do seu DarkCoach preferido digite: /pensamento! \n\n${await this.service.getDarkCoachBio()} `,
+          `Olá, ${message.from.username}, se quiser um pensamento do seu DarkCoach preferido digite: /pensamento! \n\n${DARKCOACH_BIO}`,
         );
     }
 
