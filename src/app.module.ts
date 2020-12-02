@@ -26,7 +26,7 @@ export class AppModule {
   async handleTelegramMessages(payload: TelegramOnMessagePayload) {
     const { bot, message } = payload;
 
-    switch (message.text) {
+    switch (message.text.replace(DARKCOACH_BOT, '')) {
       case '/pensamento':
         return bot.sendMessage(
           message.chat.id,
