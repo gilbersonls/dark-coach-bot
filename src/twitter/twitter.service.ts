@@ -16,15 +16,13 @@ export class TwitterService {
     });
   }
 
-  private get(path: string, params: Twitter.RequestParams): Promise<any> {
+  private get(path: string, params?: Twitter.RequestParams): Promise<any> {
     return new Promise((resolve, reject) =>
-      this.client.get(path, params, (error, data) =>
-        error ? reject(error) : resolve(data),
-      ),
+      this.client.get(path, params, (error, data) => (error ? reject(error) : resolve(data))),
     );
   }
 
-  search(query: string, params: Twitter.RequestParams): Promise<SearchResult> {
+  search(query: string, params?: Twitter.RequestParams): Promise<SearchResult> {
     return this.get('search/tweets', {
       q: query,
       tweet_mode: 'extended',
