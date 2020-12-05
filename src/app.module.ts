@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ormconfig } from './ormconfig';
+import { Rage } from './rage/rage.entity';
 import { RageModule } from './rage/rage.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { TwitterModule } from './twitter/twitter.module';
@@ -15,7 +15,12 @@ import { TwitterModule } from './twitter/twitter.module';
     ConfigModule.forRoot({ isGlobal: true }),
     EventEmitterModule.forRoot(),
     CacheModule.register(),
-    TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      entities: [Rage],
+      synchronize: true,
+    }),
     TwitterModule,
     TelegramModule,
     RageModule,

@@ -13,10 +13,7 @@
     "start:dev": "concurrently \"docker-compose up\" \"nest start --watch\"",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
-    "typeorm": "ts-node --project tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli -f ./src/ormconfig.ts",
-    "migration:generate": "yarn typeorm migration:generate -n",
-    "migration:run": "yarn typeorm migration:run"
+    "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
