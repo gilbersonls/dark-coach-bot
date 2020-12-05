@@ -11,8 +11,7 @@ export const ormconfig: TypeOrmModuleOptions = {
   url: process.env.DATABASE_URL,
   entities: [Rage],
   synchronize: process.env.NODE_ENV === 'development',
-  migrations: ['dist/migrations/*{.ts,.js}'],
-  migrationsTableName: 'migrations_typeorm',
+  migrations: ['src/migrations/*{.ts,.js}'],
   migrationsRun: true,
   cli: {
     migrationsDir: 'src/migration',
