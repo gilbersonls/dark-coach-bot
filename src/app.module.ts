@@ -17,11 +17,7 @@ import { TwitterModule } from './twitter/twitter.module';
     CacheModule.register(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.PG_HOST,
-      port: Number(process.env.PG_PORT),
-      username: process.env.PG_USER,
-      password: process.env.PG_PASS,
-      database: process.env.PG_NAME,
+      url: process.env.DATABASE_URL,
       entities: [Rage],
       synchronize: process.env.NODE_ENV === 'development',
     }),
