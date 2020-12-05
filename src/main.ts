@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
 
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
 
-const bot = new TelegramBot(process.env.TELEGRAM_API_TOKEN, {
+export const bot = new TelegramBot(process.env.TELEGRAM_API_TOKEN, {
   polling: DEVELOPMENT,
 });
 
