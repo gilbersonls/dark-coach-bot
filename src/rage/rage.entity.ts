@@ -5,10 +5,10 @@ export class Rage {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column()
+  @Column({ type: 'bigint' })
   user_id: number;
 
-  @Column()
+  @Column({ type: 'bigint' })
   chat_id: number;
 
   @Column()
