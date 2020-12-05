@@ -79,14 +79,10 @@ export class AppService {
     const rages = await this.rageService.findAllOrderByUpdatedAt(message.chat.id);
 
     const result = markdownTable([
-      ['Quem?', 'Qty.', 'Último em'],
+      ['Quem?', 'TOP #RAGE'],
       ...rages
         .sort((a, b) => (a.quantity > b.quantity ? 1 : -1))
-        .map(({ first_name, quantity, updated_at }) => [
-          first_name,
-          quantity.toString(),
-          format(updated_at, 'dd/MM/yyyy HH:mm'),
-        ]),
+        .map(({ first_name, quantity, updated_at }) => [first_name, quantity.toString()]),
     ]);
 
     bot.sendMessage(
