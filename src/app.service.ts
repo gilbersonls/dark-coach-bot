@@ -54,8 +54,8 @@ export class AppService {
   @OnEvent('telegram.command.rage')
   async telegramCommandRage({ bot, message }: TelegramOnMessagePayload) {
     const rage = (await this.rageService.findOne(message.chat.id, message.from.id)) || {
-      id: message.from.id,
-      chat_id: message.chat.id,
+      user_id: message.from.id,
+      chat_id: message.chat.id || message.from.id,
       user: message.from.username,
       first_name: message.from.first_name,
       created_at: new Date(),
@@ -78,17 +78,22 @@ export class AppService {
   async telegramCommandRageinfo({ bot, message }: TelegramOnMessagePayload) {
     const rages = await this.rageService.findAllOrderByUpdatedAt(message.chat.id);
 
-    const result = markdownTable([
-      ['Quem?', 'TOP #RAGE'],
-      ...rages
-        .sort((a, b) => (a.quantity > b.quantity ? 1 : -1))
-        .map(({ first_name, quantity, updated_at }) => [first_name, quantity.toString()]),
-    ]);
+    if (rages.length >= 1) {
+      const result = markdownTable([
+        ['Quem?', 'TOP #RAGE'],
+        ...rages
+          .sort((a, b) => (a.quantity > b.quantity ? 1 : -1))
+          .map(({ first_name, quantity }) => [first_name, quantity.toString()]),
+      ]);
+
+      bot.sendMessage(message.chat.id, `<pre>${result}</pre>`, { parse_mode: 'HTML' });
+    }
 
     bot.sendMessage(
       message.chat.id,
-      `Estamos a ${differenceInDays(rages[0].updated_at, new Date())} dias sem rage.`,
+      `Estamos há ${
+        rages.length >= 1 ? differenceInDays(rages[0].updated_at, new Date()) : 'muitos'
+      } dias sem rage.`,
     );
-    bot.sendMessage(message.chat.id, `<pre>${result}</pre>`, { parse_mode: 'HTML' });
   }
 }

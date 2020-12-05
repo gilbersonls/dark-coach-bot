@@ -10,8 +10,8 @@ export class RageService {
     private rageRepository: Repository<Rage>,
   ) {}
 
-  findOne(chat_id: number, id: number): Promise<Rage> {
-    return this.rageRepository.findOne({ chat_id, id });
+  findOne(chat_id: number, user_id: number): Promise<Rage> {
+    return this.rageRepository.findOne({ chat_id, user_id });
   }
 
   findAllOrderByUpdatedAt(chat_id: number): Promise<Rage[]> {
