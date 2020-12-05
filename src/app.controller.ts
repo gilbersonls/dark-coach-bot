@@ -1,13 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { AppService } from './app.service';
-
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get('/thought')
-  async advice() {
-    return await this.appService.getDarkCoachThought();
+  @Get('/status')
+  advice(): { status: string } {
+    return { status: 'UP' };
   }
 }
