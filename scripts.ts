@@ -5,7 +5,7 @@ dotenv.config();
 
 async function registerWebHook() {
   const bot = new TelegramBot(process.env.TELEGRAM_API_TOKEN);
-  bot.setWebHook(`${process.env.PUBLIC_URL}/telegram/webhook`);
+  await bot.setWebHook(`${process.env.PUBLIC_URL}/telegram/webhook`);
 }
 
 async function bootstrap() {
