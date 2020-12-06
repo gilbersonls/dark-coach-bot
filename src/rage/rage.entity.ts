@@ -11,7 +11,7 @@ export class Rage {
   @Column({ type: 'bigint' })
   chat_id: number;
 
-  @Column()
+  @Column({ nullable: true })
   user: string;
 
   @Column({ nullable: true })

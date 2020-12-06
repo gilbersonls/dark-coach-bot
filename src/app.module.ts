@@ -13,7 +13,7 @@ import { TwitterModule } from './twitter/twitter.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    EventEmitterModule.forRoot(),
+    EventEmitterModule.forRoot({ wildcard: true }),
     CacheModule.register(),
     TypeOrmModule.forRoot({
       type: 'postgres',

@@ -9,7 +9,7 @@ import { TwitterService } from './twitter/twitter.service';
 import { SearchResult, Tweet } from './twitter/types';
 
 import * as markdownTable from 'markdown-table';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 
 @Injectable()
 export class AppService {
@@ -51,27 +51,29 @@ export class AppService {
     );
   }
 
-  @OnEvent('telegram.command.rage')
+  @OnEvent('telegram.message.*')
   async telegramCommandRage({ bot, message }: TelegramOnMessagePayload) {
-    const rage = (await this.rageService.findOne(message.chat.id, message.from.id)) || {
-      user_id: message.from.id,
-      chat_id: message.chat.id || message.from.id,
-      user: message.from.username,
-      first_name: message.from.first_name,
-      created_at: new Date(),
-      quantity: 0,
-    };
+    if (!message.from.is_bot) {
+      const rage = (await this.rageService.findOne(message.chat.id, message.from.id)) || {
+        user_id: message.from.id,
+        chat_id: message.chat.id || message.from.id,
+        user: message.from.username,
+        first_name: message.from.first_name,
+        created_at: new Date(),
+        quantity: 0,
+      };
 
-    await this.rageService.save({
-      ...rage,
-      updated_at: new Date(),
-      quantity: rage.quantity + 1,
-    });
+      await this.rageService.save({
+        ...rage,
+        updated_at: new Date(),
+        quantity: rage.quantity + 1,
+      });
 
-    bot.sendMessage(
-      message.chat.id,
-      `RAGEEEEEEEEEEE!!!!!!!\n+1 pro ${message.from.first_name}\n/rageinfo`,
-    );
+      bot.sendMessage(
+        message.chat.id,
+        `RAGEEEEEEEEEEE!!!!!!!\n+1 pro ${message.from.first_name}\n/rageinfo`,
+      );
+    }
   }
 
   @OnEvent('telegram.command.rageinfo')
@@ -80,10 +82,13 @@ export class AppService {
 
     if (rages.length >= 1) {
       const result = markdownTable([
-        ['Quem?', 'TOP #RAGE'],
+        ['TOP #RAGE', 'Qty.'],
         ...rages
-          .sort((a, b) => (a.quantity > b.quantity ? 1 : -1))
-          .map(({ first_name, quantity }) => [first_name, quantity.toString()]),
+          .sort((a, b) => (a.quantity > b.quantity ? -1 : 1))
+          .map(({ first_name, quantity, user }) => [
+            `${first_name}${user ? ` (${user})` : ''}`,
+            quantity.toString(),
+          ]),
       ]);
 
       bot.sendMessage(message.chat.id, `<pre>${result}</pre>`, { parse_mode: 'HTML' });
