@@ -57,21 +57,23 @@ export class AppService {
       const rage = (await this.rageService.findOne(message.chat.id, message.from.id)) || {
         user_id: message.from.id,
         chat_id: message.chat.id || message.from.id,
-        user: message.from.username,
-        first_name: message.from.first_name,
         created_at: new Date(),
         quantity: 0,
       };
 
       await this.rageService.save({
         ...rage,
+        user: message.from.username,
+        first_name: message.from.first_name,
         updated_at: new Date(),
         quantity: rage.quantity + 1,
       });
 
       bot.sendMessage(
         message.chat.id,
-        `RAGEEEEEEEEEEE!!!!!!!\n+1 pro ${message.from.first_name}\n/rageinfo`,
+        `RAGEEEEEEEEEEE!!!!!!!\n+1 pro ${message.from.first_name ||
+          message.from.username ||
+          message.from.id}\n/rageinfo`,
       );
     }
   }
